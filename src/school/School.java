@@ -35,9 +35,4 @@ public class School {
     public void addSubject(Subject subject){
         subjectList.add(subject);
     }
-
-
-
-
-
 }

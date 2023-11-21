@@ -3,6 +3,7 @@ package report;
 import grade.BasicEvaluation;
 import grade.GradeEvaluation;
 import grade.MajorEvaluation;
+import grade.PassFailEvaluation;
 import school.School;
 import school.Score;
 import school.Student;
@@ -59,18 +60,22 @@ public class GenerateGradeReport {
         int majorId = student.getMajorSubject().getSubjectId();
 
         //학점 평가 클래스들
-        GradeEvaluation[] gradeEvaluation = {new BasicEvaluation(), new MajorEvaluation()};
+        GradeEvaluation[] gradeEvaluation = {new BasicEvaluation(), new MajorEvaluation(), new PassFailEvaluation()};
 
         for(int i=0; i<scoreList.size(); i++){ //학생이 가진 점수리스트
             Score score = scoreList.get(i);
             if(score.getSubject().getSubjectId() == subject.getSubjectId()){
                 String grade;
-
-                if(score.getSubject().getSubjectId() == majorId){ // 필수과목인 경우
-                    grade = gradeEvaluation[Define.SAB_TYPE].getGrade(score.getPoint());
-                }else { //일반과목인 경우
-                    grade = gradeEvaluation[Define.AB_TYPE].getGrade(score.getPoint());
+                if(subject.getGradeType() == Define.PF_TYPE){
+                    grade = gradeEvaluation[Define.PF_TYPE].getGrade(score.getPoint());
+                }else {
+                    if(score.getSubject().getSubjectId() == majorId){ // 필수과목인 경우
+                        grade = gradeEvaluation[Define.SAB_TYPE].getGrade(score.getPoint());
+                    }else { //일반과목인 경우
+                        grade = gradeEvaluation[Define.AB_TYPE].getGrade(score.getPoint());
+                    }
                 }
+
                 buffer.append(score.getPoint());
                 buffer.append(":");
                 buffer.append(grade);
